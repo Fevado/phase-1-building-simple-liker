@@ -3,43 +3,40 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
-const colorStates = {
-  "red" : "",
-  "": "red"
-};
-
-const articleHearts = document.querySelectorAll(".like-glyph");
-
-function likeCallback(e) {
-  const heart = e.target;
-  mimicServerCall()
-    .then(function(serverMessage){
-      alert("You notified the server!");
-      alert(serverMessage);
-      heart.innerText = EMPTY_HEART[heart.innerText];
-      heart.style.color = colorStates[heart.style.color];
+document.addEventListener('DOMContentLoaded', function() {
+  const errorModal = document.getElementById('modal');
+  const hearts = document.querySelectorAll('.like-glyph')
+  errorModal.classList.add('hidden')
+  hearts.forEach((heart)=>{
+    heart.addEventListener('click',function(){
+      mimicServerCall()
+    .then(()=>{
+      heart.classList.add('activated-heart')
+      heart.innerHTML= FULL_HEART
     })
-    .catch(function(error) {
-      alert("Something went wrong!");
-    });
-mimicServerCall()
-    .then(function(serverMessage){
-      alert("You notified the server!");
-      alert(serverMessage);
-      heart.innerText = FULL_HEART[heart.innerText];
-      heart.style.color = colorStates[heart.style.color];
+  }).catch((Error)=>{
+    const errorMessage=document.getElementById('modal-message')
+    errorModal.classList.remove('hidden')
+    errorMessage.innerText='Random server error. Try again.'
+    setTimeout(() => {
+      errorModal.classList.add('hidden')
+    },3000);
+  
+  
     })
-    .catch(function(error) {
-      alert("Something went wrong!");
-    });
-}
+    })
+    })
+    herts.forEach((heart)=>{
+      heart.addEventListener('click',function(){
+      if(heart.classList.contain('activated-heart')){
+        heart.classList.remove('activated-heart')
+        heart.innerHTML= EMPTY_HEART
 
-for (const glyph of articleHearts) {
-  glyph.addEventListener("click", likeCallback);
-}
-
-
-
+      }
+      })
+    })
+  
+ 
 //------------------------------------------------------------------------------
 // Don't change the code below: this function mocks the server response
 //------------------------------------------------------------------------------
